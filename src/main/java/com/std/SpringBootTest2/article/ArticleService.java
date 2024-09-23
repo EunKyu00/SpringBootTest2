@@ -1,6 +1,7 @@
 package com.std.SpringBootTest2.article;
 
 import com.std.SpringBootTest2.DataNotFoundException;
+import com.std.SpringBootTest2.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

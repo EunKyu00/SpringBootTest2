@@ -1,8 +1,11 @@
 package com.std.SpringBootTest2.article;
 
+import com.std.SpringBootTest2.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/article")
 public class ArticleController {
+
     private final ArticleService articleService;
+    private final UserService userService;
 
     @GetMapping("/list")
     public String list(Model model){
@@ -27,13 +32,17 @@ public class ArticleController {
         return "article_detail";
     }
     @GetMapping("/create")
-    public String createArticle(){
+    public String createArticle(ArticleForm articleForm){
         return "article_form";
     }
 
     @PostMapping("/create")
-    public String createArticle(Model model, @RequestParam("title") String title, @RequestParam("content") String content){
-        this.articleService.create(title,content);
+    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "article_form";
+        }
+
+        this.articleService.create(articleForm.getTitle(), articleForm.getContent());
         return "redirect:/article/list";
     }
 }
